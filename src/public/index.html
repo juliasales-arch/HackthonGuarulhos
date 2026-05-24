@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Guarulhos+</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="totem" aria-label="Guarulhos+">
+        <header class="brand-bar">
+          <div>
+            <span>Prefeitura de Guarulhos</span>
+            <strong>Guarulhos+</strong>
+          </div>
+          <div class="status-card">
+            <span id="apiStatusDot" class="status-dot"></span>
+            <small id="apiStatusText">Verificando</small>
+          </div>
+        </header>
+
+        <div class="progress" aria-hidden="true">
+          <span id="progressFill"></span>
+        </div>
+
+        <section class="screen active" data-screen="0">
+          <div class="hero-illustration" aria-hidden="true">
+            <div class="family-mark">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+          <h1>Vamos descobrir quais benefícios sua família pode receber?</h1>
+          <p class="lead">É rápido e fácil. Vamos lá!</p>
+          <button id="btnComecar" class="action primary">Continuar <span>→</span></button>
+        </section>
+
+        <section class="screen" data-screen="1">
+          <div class="big-icon people-icon" aria-hidden="true"></div>
+          <h2>Quantas pessoas moram com você?</h2>
+          <div class="stepper">
+            <button class="square-btn" data-action="dec" aria-label="Diminuir">−</button>
+            <output id="qtdPessoasValue">4</output>
+            <button class="square-btn" data-action="inc" aria-label="Aumentar">+</button>
+          </div>
+          <p class="hint">Inclua você</p>
+        </section>
+
+        <section class="screen" data-screen="2">
+          <h2>Informe quantas pessoas há em cada faixa etária</h2>
+          <div class="age-grid">
+            <label>0 a 5 anos <input id="faixa0a5" type="number" min="0" value="1" /></label>
+            <label>6 a 17 anos <input id="faixa6a17" type="number" min="0" value="1" /></label>
+            <label>18 a 59 anos <input id="faixa18a59" type="number" min="0" value="2" /></label>
+            <label>60 anos ou mais <input id="faixa60mais" type="number" min="0" value="0" /></label>
+          </div>
+        </section>
+
+        <section class="screen" data-screen="3">
+          <h2>Qual é a renda total da sua família?</h2>
+          <div id="incomeOptions" class="option-list"></div>
+        </section>
+
+        <section class="screen" data-screen="4">
+          <h2>Alguém da sua família possui alguma destas condições?</h2>
+          <div class="option-list">
+            <label class="option-row"><input type="checkbox" name="condicao" value="gestante" /> Gestantes</label>
+            <label class="option-row"><input type="checkbox" name="condicao" value="deficiencia" /> Pessoa com deficiência</label>
+            <label class="option-row"><input type="checkbox" name="condicao" value="idoso" /> Idoso com 60 anos ou mais</label>
+            <label class="option-row"><input type="checkbox" name="condicao" value="doenca" /> Doença/incapacidade</label>
+          </div>
+        </section>
+
+        <section class="screen" data-screen="5">
+          <h2>Sua família recebe algum desses benefícios?</h2>
+          <div class="option-list">
+            <label class="option-row"><input type="checkbox" name="beneficioAtual" value="bolsa_familia" /> Bolsa Família</label>
+            <label class="option-row"><input type="checkbox" name="beneficioAtual" value="bpc_loas" /> BPC / LOAS</label>
+            <label class="option-row"><input type="checkbox" name="beneficioAtual" value="seguro_desemprego" /> Seguro Desemprego</label>
+            <label class="option-row"><input type="checkbox" name="beneficioAtual" value="auxilio_doenca" /> Auxílio Doença</label>
+          </div>
+        </section>
+
+        <section class="screen" data-screen="6">
+          <h2>Com base nas informações fornecidas, sua família pode solicitar:</h2>
+          <div id="beneficiosLista" class="option-list compact-list"></div>
+          <div id="beneficiosElegiveis" class="visually-hidden"></div>
+        </section>
+
+        <section class="screen" data-screen="7">
+          <h2>Informe seus dados para prosseguirmos com o agendamento</h2>
+          <div class="field-list">
+            <label>Nome completo <input id="nomeCompleto" type="text" value="Maria Silva" /></label>
+            <label>Telefone para contato <input id="telefone" type="tel" value="11999999999" /></label>
+          </div>
+        </section>
+
+        <section class="screen" data-screen="8">
+          <h2>Escolha o dia e horário do seu atendimento</h2>
+          <div class="calendar-card" aria-hidden="true">
+            <div class="calendar-head">
+              <span>‹</span>
+              <strong id="calendarMonth">Agenda disponível</strong>
+              <span>›</span>
+            </div>
+            <div class="calendar-week">
+              <span>DOM</span>
+              <span>SEG</span>
+              <span>TER</span>
+              <span>QUA</span>
+              <span>QUI</span>
+              <span>SEX</span>
+              <span>SAB</span>
+            </div>
+            <div id="calendarDays" class="calendar-days">
+              <span>1</span>
+              <span>2</span>
+              <span>3</span>
+              <span>4</span>
+              <span>5</span>
+              <span>6</span>
+              <span>7</span>
+              <span>8</span>
+              <span>9</span>
+              <span>10</span>
+              <span>11</span>
+              <span>12</span>
+              <span>13</span>
+              <span>14</span>
+              <span>15</span>
+              <span>16</span>
+              <span>17</span>
+              <span>18</span>
+              <span class="active-day">19</span>
+              <span>20</span>
+              <span>21</span>
+              <span>22</span>
+              <span>23</span>
+              <span>24</span>
+              <span>25</span>
+              <span>26</span>
+              <span>27</span>
+              <span>28</span>
+              <span>29</span>
+              <span>30</span>
+              <span>31</span>
+            </div>
+          </div>
+          <div class="field-list">
+            <label>Data <select id="dataAgendamento"><option value="">Carregando...</option></select></label>
+            <label>Horário <select id="horarioAgendamento"><option value="">Selecione uma data</option></select></label>
+          </div>
+          <div id="slotsLista" class="slot-list"></div>
+        </section>
+
+        <section class="screen success-screen" data-screen="9">
+          <h2>Seu agendamento foi realizado com sucesso!</h2>
+          <div id="agendamentoResumo" class="summary-box"></div>
+          <h3>Leve os seguintes documentos:</h3>
+          <div id="documentosLista" class="document-list"></div>
+          <button id="btnImprimirDocumentos" class="action secondary print-btn">Imprimir lista</button>
+          <button id="btnReiniciar" class="action secondary">Finalizar</button>
+        </section>
+
+        <footer class="nav-bar">
+          <button id="btnVoltar" class="action secondary">← Voltar</button>
+          <button id="btnContinuar" class="action primary">Continuar <span>→</span></button>
+          <button id="btnMic" class="mic-btn" aria-label="Entrada por voz">🎙</button>
+        </footer>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
