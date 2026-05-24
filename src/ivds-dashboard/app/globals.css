@@ -1,0 +1,163 @@
+@import 'leaflet/dist/leaflet.css';
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #07111f;
+  --bg-surface: rgba(10, 18, 36, 0.84);
+  --bg-card: rgba(13, 22, 42, 0.92);
+  --bg-elevated: rgba(18, 30, 54, 0.96);
+  --border: rgba(151, 177, 232, 0.16);
+  --border-strong: rgba(151, 177, 232, 0.28);
+  --text-primary: #f4f7fb;
+  --text-secondary: #b8c7de;
+  --text-muted: #7e92b6;
+  --success: #15b79e;
+  --warning: #f59e0b;
+  --critical: #ef4444;
+  --high: #f97316;
+  --medium: #eab308;
+  --low: #22c55e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, rgba(5, 11, 21, 0.82) 0%, rgba(7, 17, 31, 0.98) 100%),
+    var(--bg);
+  color: var(--text-primary);
+  font-family: 'Manrope', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.92), transparent 82%);
+  opacity: 0.5;
+}
+
+::selection {
+  background: rgba(77, 133, 255, 0.35);
+  color: white;
+}
+
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(233, 238, 246, 0.9), rgba(225, 232, 243, 0.92));
+  font-family: 'Manrope', sans-serif;
+}
+
+.leaflet-control-attribution {
+  display: none;
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: rgba(8, 16, 33, 0.98);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+}
+
+.leaflet-tooltip {
+  background: rgba(8, 16, 33, 0.96);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.25);
+}
+
+.map-heat-core,
+.map-heat-glow {
+  transition:
+    fill-opacity 180ms ease,
+    stroke-width 180ms ease,
+    opacity 180ms ease,
+    filter 200ms ease;
+}
+
+.map-heat-glow--critical {
+  filter: blur(0.3px) drop-shadow(0 0 14px rgba(215, 63, 69, 0.3));
+}
+
+.map-heat-glow--high {
+  filter: blur(0.3px) drop-shadow(0 0 12px rgba(225, 123, 47, 0.24));
+}
+
+.map-heat-glow--medium {
+  filter: blur(0.25px) drop-shadow(0 0 11px rgba(212, 166, 58, 0.22));
+}
+
+.map-heat-glow--low {
+  filter: blur(0.25px) drop-shadow(0 0 10px rgba(63, 153, 105, 0.2));
+}
+
+.map-heat-core--selected {
+  animation: mapPulse 2.8s ease-in-out infinite;
+}
+
+.map-hover-tooltip {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.map-hover-tooltip .leaflet-tooltip-content {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(120, 141, 183, 0.32);
+  background: rgba(246, 250, 255, 0.95);
+  color: #1e293b;
+  backdrop-filter: blur(8px);
+}
+
+.map-click-popup .leaflet-popup-content-wrapper,
+.map-click-popup .leaflet-popup-tip {
+  border: 1px solid rgba(120, 141, 183, 0.32);
+  background: rgba(244, 248, 255, 0.97);
+  color: #0f172a;
+  box-shadow: 0 20px 48px rgba(44, 62, 103, 0.28);
+  backdrop-filter: blur(10px);
+}
+
+.map-click-popup .leaflet-popup-content {
+  margin: 10px 12px;
+}
+
+@keyframes mapPulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 8px rgba(248, 250, 252, 0.15));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 16px rgba(248, 250, 252, 0.3));
+  }
+}
+
+@layer utilities {
+  .text-grid {
+    text-wrap: balance;
+  }
+}
