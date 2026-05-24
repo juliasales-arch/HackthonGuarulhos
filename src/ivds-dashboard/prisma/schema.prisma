@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  CRAS
+  OPERADOR
+}
+
+enum IvdsLevel {
+  CRITICAL
+  HIGH
+  MEDIUM
+  LOW
+}
+
+model Municipality {
+  id             String            @id @default(cuid())
+  name           String            @unique
+  state          String
+  referenceYear  Int               @default(2026)
+  neighborhoods  Neighborhood[]
+  snapshots      TerritorySnapshot[]
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+}
+
+model Neighborhood {
+  id                String              @id @default(cuid())
+  municipalityId     String
+  municipality       Municipality       @relation(fields: [municipalityId], references: [id], onDelete: Cascade)
+  externalId        String?
+  name              String
+  region            String
+  macroRegion       String
+  crasUnit          String
+  latitude          Float
+  longitude         Float
+  population        Int
+  households        Int
+  cadunicoFamilies  Int
+  elderlyPopulation Int
+  ivdsScore         Float               @default(0)
+  level             IvdsLevel           @default(LOW)
+  dominantDimension String              @default("D1")
+  recommendation    String              @default("")
+  indicators        IndicatorMeasure[]
+  snapshots         TerritorySnapshot[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+}
+
+model IndicatorMeasure {
+  id             String       @id @default(cuid())
+  neighborhoodId  String
+  neighborhood    Neighborhood @relation(fields: [neighborhoodId], references: [id], onDelete: Cascade)
+  code           String
+  dimension      String
+  label          String
+  weight         Float
+  rawValue       Float
+  normalizedValue Float
+  createdAt      DateTime     @default(now())
+}
+
+model DashboardUser {
+  id         String    @id @default(cuid())
+  name       String
+  email      String    @unique
+  role       UserRole  @default(OPERADOR)
+  crasUnit   String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model TerritorySnapshot {
+  id            String       @id @default(cuid())
+  municipalityId String
+  municipality   Municipality @relation(fields: [municipalityId], references: [id], onDelete: Cascade)
+  referenceDate  DateTime
+  source        String
+  note          String?
+  payload       Json
+  createdAt     DateTime     @default(now())
+}
